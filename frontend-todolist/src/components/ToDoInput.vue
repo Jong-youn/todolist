@@ -14,8 +14,7 @@ export default {
     addItem() {
       var todo = document.getElementById("item").value;
       var value = {'done': false, 'todo': todo};
-      if (value.length != 0) {
-        console.log(JSON.stringify(value))
+      if (!todo.length.isEmpty()) {
         localStorage.setItem(todo, JSON.stringify(value))
         document.getElementById("item").value = ""
       }
