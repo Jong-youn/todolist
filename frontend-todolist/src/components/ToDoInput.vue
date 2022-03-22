@@ -1,8 +1,8 @@
 <template>
   <div class="inputBox shadow">
-    <input type="text">
+    <input type="text" id="item" v-on:keyup.enter="addItem">
     <span class="addContainer">
-      <i class="addBtn fas fa-plus" aria-hidden="true"></i>
+      <i class="addBtn fas fa-plus" aria-hidden="true" v-on:click="addItem"></i>
     </span>
 
   </div>
@@ -10,7 +10,15 @@
 
 <script>
 export default {
-
+  methods: {
+    addItem() {
+      var item = document.getElementById("item").value;
+      if (item.length != 0) {
+        console.log(item)
+        localStorage.setItem(item, item)
+      }
+    }
+  }
 }
 </script>
 
