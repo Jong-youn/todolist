@@ -12,10 +12,12 @@
 export default {
   methods: {
     addItem() {
-      var item = document.getElementById("item").value;
-      if (item.length != 0) {
-        console.log(item)
-        localStorage.setItem(item, item)
+      var todo = document.getElementById("item").value;
+      var value = {'done': false, 'todo': todo};
+      if (value.length != 0) {
+        console.log(JSON.stringify(value))
+        localStorage.setItem(todo, JSON.stringify(value))
+        document.getElementById("item").value = ""
       }
     }
   }

@@ -1,12 +1,16 @@
 <template>
-  <div class="clearAllContainer clearAllBtn">
+  <div class="clearAllContainer clearAllBtn" v-on:click="removeItems">
     Clear All
   </div>
 </template>
 
 <script>
 export default {
-
+  methods: {
+    removeItems() {
+      localStorage.clear()
+    }
+  }
 }
 </script>
 
