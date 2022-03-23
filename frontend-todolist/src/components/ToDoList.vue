@@ -1,9 +1,9 @@
 <template>
   <div>
     <ul>
-      <li v-for="(item, idx) in items" v-bind:key="item">
+      <li v-for="(item, idx) in items" v-bind:key="item.todo">
         <i class="checkBtn fas fa-check" v-bind:class="[ item.done ? 'checkBtnCompleted' : 'checkBtn' ]"></i>
-        <span :class="{ 'textCompleted' : item.done == true }" v-on:click="finishItem(item)">{{ item.todo }}</span>
+        <span :class="{ 'textCompleted' : item.done == true }" v-on:click="finishItem(item, idx)">{{ item.todo }}</span>
         <span class="removeBtn" v-on:click="removeItem(item, idx)">
           <i class="removeBtn fas fa-trash-alt"></i>
         </span>
@@ -14,24 +14,13 @@
 
 <script>
 export default {
-  data() {
-    return {
-      items: []
-    }
-  },
-  created() {
-    for (var i = 0; i < localStorage.length; i++) {
-      this.items.push(JSON.parse(localStorage.getItem(localStorage.key(i))))
-    }
-  },
+  props: ['items'],
   methods: {
-    finishItem(item) {
-      item.done = !item.done
-      localStorage.setItem(item.todo, JSON.stringify(item))
+    finishItem(item, idx) {
+      this.$emit('finishTodo', item, idx)
     },
     removeItem(item, idx) {
-      localStorage.removeItem(item.todo)
-      this.items.splice(idx, 1)
+      this.$emit('removeTodo', item, idx)
     }
   }
 }

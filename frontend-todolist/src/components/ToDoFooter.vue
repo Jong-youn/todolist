@@ -8,7 +8,7 @@
 export default {
   methods: {
     removeItems() {
-      localStorage.clear()
+      this.$emit('removeTodos')
     }
   }
 }
