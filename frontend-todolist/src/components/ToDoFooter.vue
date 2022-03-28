@@ -8,7 +8,7 @@
 export default {
   methods: {
     removeItems() {
-      this.$emit('removeTodos')
+      this.$store.commit('removeTodos')
     }
   }
 }
