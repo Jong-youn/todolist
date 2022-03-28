@@ -1,10 +1,9 @@
 <template>
   <div>
     <h1>TODO it!</h1>
-    <to-do-input v-on:addTodo="addTodo"></to-do-input>
-    <to-do-list v-bind:items="items"
-                v-on:finishTodo="finishTodo" v-on:removeTodo="removeTodo"></to-do-list>
-    <to-do-footer v-on:removeTodos="removeTodos"></to-do-footer>
+    <to-do-input></to-do-input>
+    <to-do-list></to-do-list>
+    <to-do-footer></to-do-footer>
   </div>
 </template>
 
@@ -18,35 +17,6 @@ export default {
     ToDoInput,
     ToDoFooter,
     ToDoList
-  },
-  data() {
-    return {
-      items: []
-    }
-  },
-  created() {
-    for (var i = 0; i < localStorage.length; i++) {
-      this.items.push(JSON.parse(localStorage.getItem(localStorage.key(i))))
-    }
-  },
-  methods: {
-    finishTodo(item, idx) {
-      this.items[idx].done = !this.items[idx].done
-      localStorage.setItem(item.todo, JSON.stringify(item))
-    },
-    removeTodo(item, idx) {
-      localStorage.removeItem(item.todo)
-      this.items.splice(idx, 1)
-    },
-    addTodo(todo) {
-      var value = {'done': false, 'todo': todo};
-      localStorage.setItem(todo, JSON.stringify(value))
-      this.items.push(value)
-    },
-    removeTodos() {
-      localStorage.clear()
-      this.items = []
-    }
   }
 }
 </script>

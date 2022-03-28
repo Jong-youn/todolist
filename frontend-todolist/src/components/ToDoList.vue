@@ -1,9 +1,10 @@
 <template>
   <div>
     <ul>
-      <li v-for="(item, idx) in items" v-bind:key="item.todo">
+      <li v-for="(item, idx) in this.$store.state.items" v-bind:key="item.todo" 
+        v-on:click="finishItem(item, idx)">
         <i class="checkBtn fas fa-check" v-bind:class="[ item.done ? 'checkBtnCompleted' : 'checkBtn' ]"></i>
-        <span :class="{ 'textCompleted' : item.done == true }" v-on:click="finishItem(item, idx)">{{ item.todo }}</span>
+        <span :class="{ 'textCompleted' : item.done == true }">{{ item.todo }}</span>
         <span class="removeBtn" v-on:click="removeItem(item, idx)">
           <i class="removeBtn fas fa-trash-alt"></i>
         </span>
@@ -17,10 +18,10 @@ export default {
   props: ['items'],
   methods: {
     finishItem(item, idx) {
-      this.$emit('finishTodo', item, idx)
+      this.$store.commit('finishTodo', {item, idx})
     },
     removeItem(item, idx) {
-      this.$emit('removeTodo', item, idx)
+      this.$store.commit('removeTodo', {item, idx})
     }
   }
 }
