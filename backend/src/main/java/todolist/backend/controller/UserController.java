@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -48,5 +49,22 @@ public class UserController {
         }
     }
 
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticate(@RequestBody UserDTO userDTO) {
+        UserEntity user = userService.getByCredentials(
+                userDTO.getEmail(), userDTO.getPassword());
 
+        if (user != null) {
+            final UserDTO responseUserDTO = UserDTO.builder()
+                    .email(user.getEmail())
+                    .id(user.getId())
+                    .build();
+            return ResponseEntity.ok().body(responseUserDTO);
+        } else {
+            ResponseDTO responseDTO = ResponseDTO.builder()
+                    .error("Login failed")
+                    .build();
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
 }
