@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import todolist.backend.model.TodoEntity;
 import todolist.backend.persistence.TodoRepository;
@@ -68,7 +69,7 @@ public class TodoService {
         return search(entity.getUserId());
     }
 
-    public List<TodoEntity> delete(TodoEntity entity) {
+    public List<TodoEntity> deleteTodo(TodoEntity entity) {
         validate(entity);
 
         try {
@@ -79,5 +80,18 @@ public class TodoService {
         }
 
         return search(entity.getUserId());
+    }
+
+    @Transactional
+    public List<TodoEntity> deleteAll(String userId) {
+        try {
+            System.out.println("before" + userId);
+            repository.deleteByUserId(userId);
+            System.out.println("after");
+        } catch (Exception e) {
+            log.error("could not delete todos", e);
+            throw new RuntimeException("could not delete todos");
+        }
+        return search(userId);
     }
 }
