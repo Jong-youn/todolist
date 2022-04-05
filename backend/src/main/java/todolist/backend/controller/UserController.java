@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import todolist.backend.dto.ResponseDTO;
 import todolist.backend.dto.UserDTO;
 import todolist.backend.model.UserEntity;
+import todolist.backend.security.TokenProvider;
 import todolist.backend.service.UserService;
 
 @Slf4j
@@ -25,6 +26,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TokenProvider tokenProvider;
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
@@ -55,9 +59,11 @@ public class UserController {
                 userDTO.getEmail(), userDTO.getPassword());
 
         if (user != null) {
+            final String token = tokenProvider.create(user);
             final UserDTO responseUserDTO = UserDTO.builder()
                     .email(user.getEmail())
                     .id(user.getId())
+                    .token(token)
                     .build();
             return ResponseEntity.ok().body(responseUserDTO);
         } else {
